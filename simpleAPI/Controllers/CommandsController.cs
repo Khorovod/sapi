@@ -9,9 +9,9 @@ namespace SimpleAPI.Controllers
     [ApiController]
     public class CommandsController : ControllerBase
     {
-        private readonly ICommandRepository source;
+        private readonly ICommandSource source;
 
-        public CommandsController(ICommandRepository source)
+        public CommandsController(ICommandSource source)
         {
             this.source = source;
         }
@@ -26,7 +26,12 @@ namespace SimpleAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<Command> GetCommandById(int id)
         {
-            return Ok(source.GetCommandById(id));
+            var item = source.GetCommandById(id);
+            if(item != null)
+            {
+                return Ok();
+            }
+            return NotFound();
         }
 
     }

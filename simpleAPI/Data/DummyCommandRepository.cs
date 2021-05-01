@@ -3,7 +3,7 @@ using SimpleAPI.Models;
 
 namespace SimpleAPI.Data
 {
-    public class DummyCommandRepository : ICommandRepository
+    public class DummyCommandRepository : ICommandSource
     {
         public IEnumerable<Command> GetAllCommands()
         {

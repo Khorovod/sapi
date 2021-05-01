@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SimpleAPI.Data;
 using SimpleAPI.Models;
+using AutoMapper;
 
 namespace simpleAPI
 {
@@ -28,9 +30,15 @@ namespace simpleAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<CommandContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("CommandSqlServer")
+                ));
 
             services.AddControllers();
-            services.AddScoped<ICommandRepository, DummyCommandRepository>();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            
+            services.AddScoped<ICommandSource, SqlServerRepository>();
 
             
             services.AddSwaggerGen(c =>
