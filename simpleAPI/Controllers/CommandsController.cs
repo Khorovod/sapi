@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SimpleAPI.Models;
 using SimpleAPI.Data;
+using AutoMapper;
+using SimpleAPI.DataTransferObjects;
 
 namespace SimpleAPI.Controllers
 {
@@ -10,26 +12,29 @@ namespace SimpleAPI.Controllers
     public class CommandsController : ControllerBase
     {
         private readonly ICommandSource source;
+        private readonly IMapper mapper;
 
-        public CommandsController(ICommandSource source)
+        public CommandsController(ICommandSource source, IMapper mapper)
         {
             this.source = source;
+            this.mapper = mapper;
         }
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<Command>> GetAllCommands()
+        public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
         {
-            return Ok(source.GetAllCommands());
+            var result = source.GetAllCommands();
+            return Ok(mapper.Map<CommandReadDto>(result));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Command> GetCommandById(int id)
+        public ActionResult<CommandReadDto> GetCommandById(int id)
         {
             var item = source.GetCommandById(id);
             if(item != null)
             {
-                return Ok();
+                return Ok(mapper.Map<CommandReadDto>(item));
             }
             return NotFound();
         }

@@ -38,7 +38,8 @@ namespace simpleAPI
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
-            services.AddScoped<ICommandSource, SqlServerRepository>();
+            //services.AddScoped<ICommandSource, SqlServerRepository>();
+            services.AddScoped<ICommandSource, DummyCommandRepository>();
 
             
             services.AddSwaggerGen(c =>

@@ -17,7 +17,7 @@ namespace SimpleAPI.Data
 
         public Command GetCommandById(int id)
         {
-            return new Command{Id = 1, HowTo = "Bombo Clah", Line = "BOMBOCLAA", Platform = "Any"};
+            return id == 1 ? new Command{Id = id, HowTo = "Bombo Clah", Line = "BOMBOCLAA", Platform = "Any"} : null;
         }
     }
 }
