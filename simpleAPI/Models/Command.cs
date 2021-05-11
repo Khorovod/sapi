@@ -13,7 +13,7 @@ namespace SimpleAPI.Models
 
         [Required]
         public string Line { get; set; }
-
+        
         public string Platform { get; set; }
         
     }

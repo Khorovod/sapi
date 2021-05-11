@@ -13,8 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SimpleAPI.Data;
-using SimpleAPI.Models;
-using AutoMapper;
+using SimpleAPI.DtoProfiles;
 
 namespace simpleAPI
 {
@@ -36,12 +35,12 @@ namespace simpleAPI
 
             services.AddControllers();
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(CommandProfile));
             
-            //services.AddScoped<ICommandSource, SqlServerRepository>();
-            services.AddScoped<ICommandSource, DummyCommandRepository>();
-
-            
+            services.AddScoped<ICommandSource, SqlServerRepository>();
+            //services.AddScoped<ICommandSource, DummyCommandRepository>();
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "simpleAPI", Version = "v1" });

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SimpleAPI.Models;
@@ -12,6 +13,16 @@ namespace SimpleAPI.Data
         {
             this.context = context;
         }
+
+        public void CreateNewCommand(Command command)
+        {
+            if(command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+            context.Commands.Add(command);
+        }
+
         public IEnumerable<Command> GetAllCommands()
         {
             return context.Commands.ToList();
@@ -20,6 +31,12 @@ namespace SimpleAPI.Data
         public Command GetCommandById(int id)
         {
             return context.Commands.FirstOrDefault(l => l.Id == id);
+        }
+
+        public bool SaveChanges()
+        {
+            //сейв у всего контекста
+            return context.SaveChanges() >=0;
         }
     }
 }

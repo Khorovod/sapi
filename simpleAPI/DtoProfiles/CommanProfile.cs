@@ -1,6 +1,7 @@
 using AutoMapper;
 using SimpleAPI.Models;
 using SimpleAPI.DataTransferObjects;
+using System.Collections.Generic;
 
 namespace SimpleAPI.DtoProfiles
 {
@@ -9,6 +10,7 @@ namespace SimpleAPI.DtoProfiles
         public CommandProfile()
         {
             CreateMap<Command, CommandReadDto>();
+            CreateMap<CommandCreateDto, Command>();
         }
     }
 }

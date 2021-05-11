@@ -5,8 +5,9 @@ namespace SimpleAPI.Data
 {
     public interface ICommandSource
     {
-            IEnumerable<Command> GetAllCommands();
-            Command GetCommandById(int id);
-
+        IEnumerable<Command> GetAllCommands();
+        Command GetCommandById(int id);
+        void CreateNewCommand(Command command);
+        bool SaveChanges();
     }
 }

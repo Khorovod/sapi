@@ -4,6 +4,7 @@ using SimpleAPI.Models;
 using SimpleAPI.Data;
 using AutoMapper;
 using SimpleAPI.DataTransferObjects;
+using System;
 
 namespace SimpleAPI.Controllers
 {
@@ -24,11 +25,11 @@ namespace SimpleAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
         {
-            var result = source.GetAllCommands();
-            return Ok(mapper.Map<CommandReadDto>(result));
+            var dto = mapper.Map<IEnumerable<CommandReadDto>>(source.GetAllCommands());
+            return Ok(dto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name="GetCommandById")]
         public ActionResult<CommandReadDto> GetCommandById(int id)
         {
             var item = source.GetCommandById(id);
@@ -37,6 +38,26 @@ namespace SimpleAPI.Controllers
                 return Ok(mapper.Map<CommandReadDto>(item));
             }
             return NotFound();
+        }
+
+        [HttpPost]
+        public ActionResult<CommandReadDto> AddCommand(CommandCreateDto command)
+        {
+            try
+            {
+                var commandModel = mapper.Map<Command>(command);
+                source.CreateNewCommand(commandModel);
+                source.SaveChanges();
+
+                var commandRead = mapper.Map<CommandReadDto>(commandModel);
+                return CreatedAtRoute(nameof(GetCommandById), new {Id = commandRead.Id}, commandRead);
+
+            }
+            catch(ArgumentNullException message)
+            {
+                return BadRequest(message);
+            }
+
         }
 
     }
