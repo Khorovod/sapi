@@ -9,5 +9,6 @@ namespace SimpleAPI.Data
         Command GetCommandById(int id);
         void CreateNewCommand(Command command);
         bool SaveChanges();
+        void UpdateCommand(Command command);
     }
 }

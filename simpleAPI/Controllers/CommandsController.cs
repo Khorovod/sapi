@@ -60,5 +60,23 @@ namespace SimpleAPI.Controllers
 
         }
 
+        [HttpPut("{id}")]
+        public ActionResult UpdateCommand(int id, CommandUpdateDto commandUpdate)
+        {
+            var modelFromSource = source.GetCommandById(id);
+            if(modelFromSource == null)
+            {
+                return NotFound();
+            }
+
+            //когда две объекта с данными. Каким то образом он делает апдейт в дбконтексте, надо только сохранить
+            mapper.Map(commandUpdate, modelFromSource);
+
+            source.UpdateCommand(modelFromSource);
+            source.SaveChanges();
+
+            return NoContent();        
+        }
+
     }
 }

@@ -38,5 +38,10 @@ namespace SimpleAPI.Data
             //сейв у всего контекста
             return context.SaveChanges() >=0;
         }
+
+        public void UpdateCommand(Command command)
+        {
+            //тут ничего не делаем, спасибо эф. Просто мапим данные в контроллере
+        }
     }
 }

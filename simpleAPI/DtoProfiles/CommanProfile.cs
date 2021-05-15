@@ -11,6 +11,7 @@ namespace SimpleAPI.DtoProfiles
         {
             CreateMap<Command, CommandReadDto>();
             CreateMap<CommandCreateDto, Command>();
+            CreateMap<CommandUpdateDto, Command>();
         }
     }
 }
