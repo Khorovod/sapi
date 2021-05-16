@@ -10,5 +10,6 @@ namespace SimpleAPI.Data
         void CreateNewCommand(Command command);
         bool SaveChanges();
         void UpdateCommand(Command command);
+        void DeleteCommand(Command command);
     }
 }

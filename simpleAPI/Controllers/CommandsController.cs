@@ -5,6 +5,7 @@ using SimpleAPI.Data;
 using AutoMapper;
 using SimpleAPI.DataTransferObjects;
 using System;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace SimpleAPI.Controllers
 {
@@ -69,7 +70,7 @@ namespace SimpleAPI.Controllers
                 return NotFound();
             }
 
-            //когда две объекта с данными. Каким то образом он делает апдейт в дбконтексте, надо только сохранить
+            //когда две объекта с данными. Дбконтекст отслеживает изменения объектов, надо только сохранить
             mapper.Map(commandUpdate, modelFromSource);
 
             source.UpdateCommand(modelFromSource);
@@ -78,5 +79,42 @@ namespace SimpleAPI.Controllers
             return NoContent();        
         }
 
+        [HttpPatch("{id}")]
+        public ActionResult PatchCommand(int id, JsonPatchDocument<CommandUpdateDto> patch)
+        {
+            var modelFromSource = source.GetCommandById(id);
+            if(modelFromSource == null)
+            {
+                return NotFound();
+            }
+
+            var commandToPatch = mapper.Map<CommandUpdateDto>(modelFromSource);
+            patch.ApplyTo(commandToPatch, ModelState);
+            if(!TryValidateModel(commandToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            mapper.Map(commandToPatch, modelFromSource);
+
+            source.UpdateCommand(modelFromSource);
+            source.SaveChanges();
+
+            return NoContent();  
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCommand(int id)
+        {
+            var modelFromSource = source.GetCommandById(id);
+            if(modelFromSource == null)
+            {
+                return NotFound();
+            }
+
+            source.DeleteCommand(modelFromSource);
+            source.SaveChanges();
+            return NoContent();
+        }
     }
 }

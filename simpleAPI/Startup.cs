@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SimpleAPI.Data;
 using SimpleAPI.DtoProfiles;
+using Newtonsoft.Json.Serialization;
 
 namespace simpleAPI
 {
@@ -33,7 +30,9 @@ namespace simpleAPI
                 Configuration.GetConnectionString("CommandSqlServer")
                 ));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(o =>
+                             {o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                             });
 
             //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddAutoMapper(typeof(CommandProfile));

@@ -24,6 +24,15 @@ namespace SimpleAPI.Data
             mock.Add(command);
         }
 
+        public void DeleteCommand(Command command)
+        {
+            if(command == null)
+            {
+                throw new ArgumentNullException();
+            }
+            mock.Remove(command);
+        }
+
         public IEnumerable<Command> GetAllCommands()
         {
             return mock;

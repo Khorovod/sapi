@@ -23,6 +23,15 @@ namespace SimpleAPI.Data
             context.Commands.Add(command);
         }
 
+        public void DeleteCommand(Command command)
+        {
+            if(command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+            context.Commands.Remove(command);
+        }
+
         public IEnumerable<Command> GetAllCommands()
         {
             return context.Commands.ToList();
