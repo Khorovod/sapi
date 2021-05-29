@@ -7,6 +7,7 @@ namespace SimpleAPI.Data
 {
     public class DummyCommandRepository : ICommandSource
     {
+        int CurrentId {get; set;} = 4;
         List<Command> mock = new List<Command>
         {
             new Command{Id = 1, HowTo = "Bombo Clah", Line = "BOMBOCLAA", Platform = "Any"},
@@ -21,6 +22,8 @@ namespace SimpleAPI.Data
             {
                 throw new ArgumentNullException();
             }
+            command.Id = CurrentId;
+            CurrentId++;
             mock.Add(command);
         }
 
