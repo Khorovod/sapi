@@ -27,6 +27,8 @@ namespace SimpleAPI.Controllers
 
 
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
         public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
         {
             logger.LogDebug("'{0}' has been invoked", nameof(GetAllCommands));
@@ -37,6 +39,9 @@ namespace SimpleAPI.Controllers
         }
 
         [HttpGet("{id}", Name="GetCommandById")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult<CommandReadDto> GetCommandById(int id)
         {
             logger.LogDebug("'{0}' has been invoked with parameter {1}", nameof(GetCommandById), id);
@@ -44,12 +49,19 @@ namespace SimpleAPI.Controllers
             var item = source.GetCommandById(id);
             if(item != null)
             {
-                return Ok(mapper.Map<CommandReadDto>(item));
+                var result = mapper.Map<CommandReadDto>(item);
+                logger.LogInformation("retrieved successfully");
+
+                return Ok(result);
             }
+
+            logger.LogInformation("Not found");
             return NotFound();
         }
 
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(500)]
         public ActionResult<CommandReadDto> AddCommand(CommandCreateDto command)
         {
             logger.LogDebug("'{0}' has been invoked with parameter {1}", nameof(AddCommand), command);
@@ -64,6 +76,9 @@ namespace SimpleAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult UpdateCommand(int id, CommandUpdateDto commandUpdate)
         {
             logger.LogDebug("'{0}' has been invoked with parameter id ={1} and {2}", nameof(UpdateCommand), id, commandUpdate);
@@ -84,6 +99,9 @@ namespace SimpleAPI.Controllers
         }
 
         [HttpPatch("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult PatchCommand(int id, JsonPatchDocument<CommandUpdateDto> patch)
         {
             logger.LogDebug("'{0}' has been invoked with parameter id={1} and {2}", nameof(PatchCommand), id, patch);
@@ -110,6 +128,9 @@ namespace SimpleAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult DeleteCommand(int id)
         {
             logger.LogDebug("'{0}' has been invoked with parameter id={1}", nameof(DeleteCommand), id);
