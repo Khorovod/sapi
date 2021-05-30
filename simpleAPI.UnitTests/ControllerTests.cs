@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using simpleAPI.UnitTests.MockData;
+using SimpleAPI.UnitTests.MockData;
 using SimpleAPI.Controllers;
 using AutoMapper;
 using SimpleAPI.Models;
@@ -9,10 +9,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Microsoft.AspNetCore.JsonPatch;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
 
-namespace simpleAPI.UnitTests
+namespace SimpleAPI.UnitTests
 {
     public class ControllerTests
     {

@@ -1,4 +1,3 @@
-
 namespace SimpleAPI.DataTransferObjects
 {
     public class CommandUpdateDto : CommandCreateDto

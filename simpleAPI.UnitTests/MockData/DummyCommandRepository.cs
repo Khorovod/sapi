@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using SimpleAPI.Data;
 
-namespace simpleAPI.UnitTests.MockData
+namespace SimpleAPI.UnitTests.MockData
 {
     public class DummyCommandRepository : ICommandSource
     {
