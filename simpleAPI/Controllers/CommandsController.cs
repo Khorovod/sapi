@@ -31,7 +31,7 @@ namespace SimpleAPI.Controllers
         [ProducesResponseType(500)]
         public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
         {
-            logger.LogDebug("'{0}' has been invoked", nameof(GetAllCommands));
+            logger?.LogDebug("'{0}' has been invoked", nameof(GetAllCommands));
 
             var dto = mapper.Map<IEnumerable<CommandReadDto>>(source.GetAllCommands());
             return Ok(dto);
@@ -44,18 +44,18 @@ namespace SimpleAPI.Controllers
         [ProducesResponseType(500)]
         public ActionResult<CommandReadDto> GetCommandById(int id)
         {
-            logger.LogDebug("'{0}' has been invoked with parameter {1}", nameof(GetCommandById), id);
+            logger?.LogDebug("'{0}' has been invoked with parameter {1}", nameof(GetCommandById), id);
 
             var item = source.GetCommandById(id);
             if(item != null)
             {
                 var result = mapper.Map<CommandReadDto>(item);
-                logger.LogInformation("retrieved successfully");
+                logger?.LogInformation("retrieved successfully");
 
                 return Ok(result);
             }
 
-            logger.LogInformation("Not found");
+            logger?.LogInformation("Not found");
             return NotFound();
         }
 
@@ -64,7 +64,7 @@ namespace SimpleAPI.Controllers
         [ProducesResponseType(500)]
         public ActionResult<CommandReadDto> AddCommand(CommandCreateDto command)
         {
-            logger.LogDebug("'{0}' has been invoked with parameter {1}", nameof(AddCommand), command);
+            logger?.LogDebug("'{0}' has been invoked with parameter {1}", nameof(AddCommand), command);
 
             var commandModel = mapper.Map<Command>(command);
             source.CreateNewCommand(commandModel);
@@ -81,7 +81,7 @@ namespace SimpleAPI.Controllers
         [ProducesResponseType(500)]
         public ActionResult UpdateCommand(int id, CommandUpdateDto commandUpdate)
         {
-            logger.LogDebug("'{0}' has been invoked with parameter id ={1} and {2}", nameof(UpdateCommand), id, commandUpdate);
+            logger?.LogDebug("'{0}' has been invoked with parameter id ={1} and {2}", nameof(UpdateCommand), id, commandUpdate);
 
             var modelFromSource = source.GetCommandById(id);
             if(modelFromSource == null)
@@ -104,7 +104,7 @@ namespace SimpleAPI.Controllers
         [ProducesResponseType(500)]
         public ActionResult PatchCommand(int id, JsonPatchDocument<CommandUpdateDto> patch)
         {
-            logger.LogDebug("'{0}' has been invoked with parameter id={1} and {2}", nameof(PatchCommand), id, patch);
+            logger?.LogDebug("'{0}' has been invoked with parameter id={1} and {2}", nameof(PatchCommand), id, patch);
 
             var modelFromSource = source.GetCommandById(id);
             if(modelFromSource == null)
@@ -133,7 +133,7 @@ namespace SimpleAPI.Controllers
         [ProducesResponseType(500)]
         public ActionResult DeleteCommand(int id)
         {
-            logger.LogDebug("'{0}' has been invoked with parameter id={1}", nameof(DeleteCommand), id);
+            logger?.LogDebug("'{0}' has been invoked with parameter id={1}", nameof(DeleteCommand), id);
 
             var modelFromSource = source.GetCommandById(id);
             if(modelFromSource == null)
