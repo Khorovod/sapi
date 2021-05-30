@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleAPI\SimpleAPI.csproj" />
+    <ProjectReference Include="..\simpleAPI\SimpleAPI.csproj" />
   </ItemGroup>
 
 </Project>
