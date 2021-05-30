@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using Microsoft.AspNetCore.JsonPatch;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace simpleAPI.UnitTests
 {
@@ -50,7 +53,17 @@ namespace simpleAPI.UnitTests
         [Test]
         public void PatchNonExistReturn404()
         {
-            var patch = _testController.PatchCommand(10, null);
+            var command = new CommandUpdateDto
+            {
+                Line = "test line",
+            };
+
+            var json = new JsonPatchDocument<CommandUpdateDto>();
+            json.Replace(path: p => p.Line, value: command.Line);
+            //не выходит проверить позитив изза https://github.com/aspnet/Mvc/issues/8640
+
+
+            var patch = _testController.PatchCommand(22, json);
 
             var notFound = patch as NotFoundResult;
             Assert.AreEqual(StatusCodes.Status404NotFound, notFound.StatusCode);
@@ -106,10 +119,12 @@ namespace simpleAPI.UnitTests
         [Test]
         public void AddItemReturn201()
         {
-            var command = new CommandCreateDto();
-            command.HowTo = "testHowTo";
-            command.Line = "testLine";
-            command.Platform = "testPlatform";
+            var command = new CommandCreateDto
+            {
+                HowTo = "testHowTo",
+                Line = "testLine",
+                Platform = "testPlatform"
+            };
 
             var add = _testController.AddCommand(command).Result;
 
@@ -123,6 +138,23 @@ namespace simpleAPI.UnitTests
                 Assert.AreEqual(command.Line, okValue.Line);
                 Assert.AreEqual(okValue.Id, 4);
             });
+        }
+
+        [Test]
+        public void UpdateItemReturn204()
+        {
+            var command = new CommandUpdateDto
+            {
+                HowTo = "testHowTo",
+                Line = "testLine",
+                Platform = "testPlatform"
+            };
+
+            var up = _testController.UpdateCommand(2, command);
+
+            var upResult = (NoContentResult)up;
+
+            Assert.AreEqual(StatusCodes.Status204NoContent, upResult.StatusCode);
         }
     }
 }
