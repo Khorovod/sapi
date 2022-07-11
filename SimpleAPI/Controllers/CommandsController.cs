@@ -4,7 +4,7 @@ using SimpleAPI.Models;
 using SimpleAPI.Data;
 using AutoMapper;
 using SimpleAPI.DataTransferObjects;
-using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Logging;
 
@@ -29,24 +29,25 @@ namespace SimpleAPI.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
+        public async Task<ActionResult<IEnumerable<CommandReadDto>>> GetAllCommands()
         {
             logger?.LogDebug("'{0}' has been invoked", nameof(GetAllCommands));
+            //var test = HttpContext.Request;
 
             var dto = mapper.Map<IEnumerable<CommandReadDto>>(source.GetAllCommands());
-            return Ok(dto);
-
+            var res = await Task.Run(()=>Ok(dto));
+            return res;
         }
 
         [HttpGet("{id}", Name="GetCommandById")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public ActionResult<CommandReadDto> GetCommandById(int id)
+        public async Task<ActionResult<CommandReadDto>> GetCommandById(int id)
         {
             logger?.LogDebug("'{0}' has been invoked with parameter {1}", nameof(GetCommandById), id);
 
-            var item = source.GetCommandById(id);
+            var item = await Task.Run(() => source.GetCommandById(id));
             if(item != null)
             {
                 var result = mapper.Map<CommandReadDto>(item);

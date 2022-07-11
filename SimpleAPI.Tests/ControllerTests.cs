@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace SimpleAPI.UnitTests
@@ -68,22 +69,22 @@ namespace SimpleAPI.UnitTests
         }
 
         [Test]
-        public void GetAllReturn200()
+        public async Task GetAllReturn200()
         {
-            var get = _testController.GetAllCommands().Result;
+            var get = await _testController.GetAllCommands();
 
-            var ok = get as OkObjectResult;
-            Assert.AreEqual(StatusCodes.Status200OK, ok.StatusCode);
+            var ok = get.Result as OkObjectResult;
+            Assert.AreEqual(StatusCodes.Status200OK, ok!.StatusCode);
 
         }
 
         [Test]
-        public void GetAllReturnCorrectItem()
+        public async Task GetAllReturnCorrectItem()
         {
-            var get = _testController.GetAllCommands().Result;
+            var get = await _testController.GetAllCommands();
 
-            var ok = get as OkObjectResult;
-            var okValue = (List<CommandReadDto>)ok.Value;
+            var ok = get.Result as OkObjectResult;
+            var okValue = (List<CommandReadDto>)ok!.Value;
 
             Assert.Multiple(() =>
             {
@@ -96,12 +97,12 @@ namespace SimpleAPI.UnitTests
         }
 
         [Test]
-        public void GetByIdReturnCorrectItem()
+        public async Task GetByIdReturnCorrectItem()
         {
-            var get = _testController.GetCommandById(2).Result;
+            var get = await _testController.GetCommandById(2);
 
-            var ok = get as OkObjectResult;
-            var okValue = (CommandReadDto)ok.Value;
+            var ok = get.Result as OkObjectResult;
+            var okValue = (CommandReadDto)ok!.Value;
 
 
             Assert.Multiple(() =>
