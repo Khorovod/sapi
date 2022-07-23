@@ -5,8 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SimpleAPI.Data;
+using SimpleAPI.Extensions;
 using SimpleAPI.DtoProfiles;
 using Newtonsoft.Json.Serialization;
+using SimpleAPI.Models;
 
 namespace simpleAPI
 {
@@ -32,7 +34,9 @@ namespace simpleAPI
             services.AddAutoMapper(typeof(CommandProfile));
             
             services.AddScoped<ICommandSource, SqlServerRepository>();
-           
+
+            services.AddFactory<ITime, Time>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "simpleAPI", Version = "v1" });
